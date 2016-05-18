@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>neighborhood Map</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- CSS links-->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+<!-- font-awesome CDN -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="content">
+        <div id="map"></div>
+    </div>
+    <div id="tool">
+        <!--this is the points list-->
+        <h3 data-bind="text: title"></h3>     
+          <div class="form-group navbar-inverse">
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" id="exampleInputAmount" placeholder="Write you Location" data-bind="value: ">
+                <div class="input-group-addon btn btn-primary" style="color:#fff; font-size:1.7rem;font-weight: 300;"><i class="fa fa-filter" aria-hidden="true"></i>filter</div>
+              </div>
+            </div>
+          </div>
+          <label>
+              <input type='checkbox' data-bind='checked: displayAdvancedOptions' />
+              Display advanced options
+          </label>
+          <p data-bind='fadeVisible: displayAdvancedOptions'>
+              Show:
+              <label><input type='radio' name="type" value='all' data-bind='checked: typeToShow' />All</label>
+              <label><input type='radio' name="type" value='store' data-bind='checked: typeToShow' />Stores</label>
+              <label><input type='radio' name="type" value='restaurant' data-bind='checked: typeToShow' />Restaurants</label>
+          </p>
+           
+          <div data-bind='template: { foreach: planetsToShow,
+                                      beforeRemove: hidePlanetElement,
+                                      afterAdd: showPlanetElement }'>
+              <div data-bind='attr: { "class": "planet " + type }, text: name'> </div>
+          </div>
+           
+          <ul id="pointList" data-bind="text: name">
+            <li data-bind="text: name"></li>
+          </ul>
+    </div>
+    <!--this is a knockout template used for point list items-->
+</body>
+<!-- JS links -->
+  <script src="scripts/jquery-2.2.2.min.js"></script>
+  <script src="scripts/knockout-3.4.0.js"></script>
+  <script src="scripts/modernizr-custom.js"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAduDRTpulVLoOk794sbmvqFJs_YMKvXQ0"></script>
+  <script src="scripts/app.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+</html>
