@@ -11,9 +11,10 @@ var map = new google.maps.Map(document.getElementById('map'), {
 /* ========= Marker  =========*/
 var Marker = function (name, lat, long, category) {
     var self = this;
-    self.name = ko.observable();
+    self.name = ko.observable(name);;
     self.lat = ko.observable(lat);
     self.long = ko.observable(long);
+    self.category = ko.observable(category);
     /* ========= Images Icons  =========*/
     // Setup the different icons
 
@@ -47,7 +48,7 @@ var Marker = function (name, lat, long, category) {
         infowindow.open(map, marker);
     });
 
-    self.category = ko.observable();
+    
 
     google.maps.event.addListener(marker, 'click', function() {
         infowindow.open(map, marker);
@@ -75,26 +76,19 @@ var Marker = function (name, lat, long, category) {
     pano.setVisible(false);
     pano = null;
     });
-
 }
 
-var ViewModel = function (name) {
+var ViewModel = function () {
     var self = this;
     self.title = ko.observable('Store and Restaurant');
-    self.name = ko.onservable();
     self.locations = ko.observableArray([
-      new Marker('Mc donald', 11.004012, -74.812481, 'restaurant'),
-      new Marker('Hamburguesas El Corral', 11.004836, -74.812189, 'restaurant'),
-      new Marker('Restaurante El Pulpo Paul', 11.003132, -74.810671, 'restaurant'),
-      new Marker('Restaurante LUPI', 11.005128, -74.811161, 'restaurant'),
-      new Marker('farma todo cll 82', 11.0030974, -74.81542189999999, 'store'),
-      new Marker('farma todo kr 51b', 11.004114,  -74.813444, false, 'store')
+      new Marker('Mc donald', 11.004012, -74.812481, 'restaurant', self),
+      new Marker('Hamburguesas El Corral', 11.004836, -74.812189, 'restaurant', self),
+      new Marker('Restaurante El Pulpo Paul', 11.003132, -74.810671, 'restaurant', self),
+      new Marker('Restaurante LUPI', 11.005128, -74.811161, 'restaurant', self),
+      new Marker('farma todo cll 82', 11.0030974, -74.81542189999999, 'store', self),
+      new Marker('farma todo kr 51b', 11.004114,  -74.813444, false, 'store', self)
     ]);
-
-    self.validatorStreetView = function() {
-
-    }
-
 };
 
 ko.applyBindings(new ViewModel());
