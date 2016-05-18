@@ -24,33 +24,19 @@
           <div class="form-group navbar-inverse">
             <div class="form-group">
               <div class="input-group">
-                <input type="text" class="form-control" id="exampleInputAmount" placeholder="Write you Location" data-bind="value: ">
+                <input type="search" class="form-control" placeholder="search place…" data-bind="">
                 <div class="input-group-addon btn btn-primary" style="color:#fff; font-size:1.7rem;font-weight: 300;"><i class="fa fa-filter" aria-hidden="true"></i>filter</div>
               </div>
             </div>
           </div>
-          <label>
-              <input type='checkbox' data-bind='checked: displayAdvancedOptions' />
-              Display advanced options
-          </label>
-          <p data-bind='fadeVisible: displayAdvancedOptions'>
-              Show:
-              <label><input type='radio' name="type" value='all' data-bind='checked: typeToShow' />All</label>
-              <label><input type='radio' name="type" value='store' data-bind='checked: typeToShow' />Stores</label>
-              <label><input type='radio' name="type" value='restaurant' data-bind='checked: typeToShow' />Restaurants</label>
-          </p>
-           
-          <div data-bind='template: { foreach: planetsToShow,
-                                      beforeRemove: hidePlanetElement,
-                                      afterAdd: showPlanetElement }'>
-              <div data-bind='attr: { "class": "planet " + type }, text: name'> </div>
-          </div>
-           
-          <ul id="pointList" data-bind="text: name">
+          <ul data-bind="foreach: locations">
             <li data-bind="text: name"></li>
           </ul>
     </div>
     <!--this is a knockout template used for point list items-->
+    <script>
+      
+    </script>
 </body>
 <!-- JS links -->
   <script src="scripts/jquery-2.2.2.min.js"></script>

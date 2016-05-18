@@ -97,3 +97,11 @@ label {
 input[type=checkbox], input[type=radio] {
   margin: 4px 4px 0 !important;
 }
+
+ul li {
+  list-style-type:none;
+  color: brown;
+  font-size: 1.9rem;
+  font-weight: 300;
+  margin: 0;
+}
