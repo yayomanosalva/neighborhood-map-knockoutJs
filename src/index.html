@@ -5,14 +5,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>neighborhood Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- CSS links-->
-  <link rel="stylesheet" href="styles/main.css">
   <!-- Latest compiled and minified CSS -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
 <!-- Optional theme -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
 <!-- font-awesome CDN -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
+<!-- CSS links-->
+<link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
     <div class="content">
@@ -24,12 +24,15 @@
           <div class="form-group navbar-inverse">
             <div class="form-group">
               <div class="input-group">
-                <input type="search" class="form-control" placeholder="search place…" data-bind="">
-                <div class="input-group-addon btn btn-primary" style="color:#fff; font-size:1.7rem;font-weight: 300;"><i class="fa fa-filter" aria-hidden="true"></i>filter</div>
+                <input type="search" class="form-control" placeholder="search place…" data-bind="textInput: query, valueUpdate: 'keyup'">
+                <div class="input-group-addon btn btn-primary" style="color:#fff; font-size:1.7rem;font-weight: 300;">
+                  <i class="fa fa-filter" aria-hidden="true"></i>
+                  filter
+                </div>
               </div>
             </div>
           </div>
-          <ul data-bind="foreach: locations">
+          <ul data-bind="foreach: search()">
             <li data-bind="text: name"></li>
           </ul>
     </div>
@@ -42,7 +45,7 @@
   <script src="scripts/jquery-2.2.2.min.js"></script>
   <script src="scripts/knockout-3.4.0.js"></script>
   <script src="scripts/modernizr-custom.js"></script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAduDRTpulVLoOk794sbmvqFJs_YMKvXQ0"></script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAduDRTpulVLoOk794sbmvqFJs_YMKvXQ0&callback=Mapa" ></script>
   <script src="scripts/app.js"></script>
   <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>

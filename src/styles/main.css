@@ -29,16 +29,16 @@ html, body {
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
   font-family: Roboto,Arial,sans-serif;
   font-size: 1.1em;
-  background: #2E3D49;
+  background: #2e3d49;
   border-radius: 4px;
   padding: 15px;
-  color: #ACB1B6;
+  color: #acb1b6;
 }
 
 /*this is the search-filter box */
 #search {
     margin: 0px;
-    background-color: #1F747D;
+    background-color: #1f747d;
     padding: 0 20px;
     width: 100%;
     font-size: 1.6em;
@@ -81,7 +81,7 @@ input[type="search"] {
     outline: none;
     background: #fff;
     color: #000;
-    border: 1px solid #E6E7E9;
+    border: 1px solid #e6e7e9;
     font-weight: 200;
     min-height: 50px;
 }
