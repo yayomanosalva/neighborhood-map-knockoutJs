@@ -104,4 +104,5 @@ ul li {
   font-size: 1.9rem;
   font-weight: 300;
   margin: 0;
+  cursor: pointer;
 }

@@ -1,5 +1,6 @@
 // Google Maps JavaScript API
 function Mapa () {
+    var infochevre = false;
     /* ========= class for the Map function =========*/
     var map = new google.maps.Map(document.getElementById('map'), {
         zoom: 17,
@@ -44,11 +45,9 @@ function Mapa () {
             title: name,
             map: map,
             icon: img,
-            draggable: true,
-            animation: google.maps.Animation.DROP,
-
+            draggable: false,
+            animation: google.maps.Animation.DROP
         });
-
 
         marker.addListener('click', function() {
             infowindow.open(map, marker, toggleBounce);
@@ -84,34 +83,33 @@ function Mapa () {
         pano.setVisible(false);
         pano = null;
         });
+
     }
 
-    /* ========= View model taht work whit knockout js =========*/
-    var ViewModel = function () {
-        var self = this;
-        self.title = ko.observable('Store and Restaurant');
-        self.locations = ko.observableArray([
+    /* ========= Array knockout js =========*/
+    self.locations = ko.observableArray([
           new Marker('Mc donald', 11.004012, -74.812481, 'restaurant', self),
           new Marker('Hamburguesas El Corral', 11.004836, -74.812189, 'restaurant', self),
           new Marker('Restaurante El Pulpo Paul', 11.003132, -74.810671, 'restaurant', self),
           new Marker('Restaurante LUPI', 11.005128, -74.811161, 'restaurant', self),
           new Marker('farma todo cll 82', 11.0030974, -74.81542189999999, 'store', self),
           new Marker('farma todo kr 51b', 11.004114,  -74.813444, false, 'store', self)
-        ]);  
-        /* ========= Computed Observables =========*/
-        self.query = ko.observable('');
-        /* object to hold our map instance */
-        self.markerkkk = new Marker();
-        self.search = ko.computed(function(){
-            return ko.utils.arrayFilter(self.locations(), function(i){
-              return i.markerkkk.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;  
-            });
-            console.log(name());
-        });  
+    ]);
+
+    /* ========= View model taht work whit knockout js =========*/
+    var ViewModel = function () {
+        var self = this;
+        self.title = ko.observable('Store and Restaurant');
     };
 
-    
+    /* ========= Computed Observables Search =========*/
+    self.query = ko.observable('');
+    /* object to hold our map instance  */
+    self.search = ko.computed(function(){
+        return ko.utils.arrayFilter(self.locations(), function(i){
+          return i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;  
+        });
+    });
     /* ========= Call the functions ViewModel =========*/
     ko.applyBindings(new ViewModel());
-
 }
