@@ -1,5 +1,5 @@
 // Google Maps JavaScript API
-function Mapa () {
+function Mapa() {
     var infochevre = false;
     /* ========= class for the Map function =========*/
     var map = new google.maps.Map(document.getElementById('map'), {
@@ -12,7 +12,7 @@ function Mapa () {
     });
 
     /* ========= Marker function, so define the markers =========*/
-    var Marker = function (name, lat, long, category) {
+    this.Marker = function(name, lat, long, category) {
         var self = this;
         self.name = ko.observable(name);
         self.lat = ko.observable(lat);
@@ -54,22 +54,24 @@ function Mapa () {
         });
 
         function toggleBounce() {
-          if (marker.getAnimation() !== null) {
-            marker.setAnimation(null);
-          } else {
-            marker.setAnimation(google.maps.Animation.BOUNCE);
-          }
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
         }
 
         var pano = null;
-            google.maps.event.addListener(infowindow, 'domready', function() {
+        google.maps.event.addListener(infowindow, 'domready', function() {
             if (pano != null) {
                 pano.unbind("position");
                 pano.setVisible(false);
             }
             pano = new google.maps.StreetViewPanorama(document.getElementById("content"), {
                 navigationControl: true,
-                navigationControlOptions: {style: google.maps.NavigationControlStyle.ANDROID},
+                navigationControlOptions: {
+                    style: google.maps.NavigationControlStyle.ANDROID
+                },
                 enableCloseButton: false,
                 addressControl: false,
                 linksControl: false
@@ -79,37 +81,39 @@ function Mapa () {
         });
 
         google.maps.event.addListener(infowindow, 'closeclick', function() {
-        pano.unbind("position");
-        pano.setVisible(false);
-        pano = null;
+            pano.unbind("position");
+            pano.setVisible(false);
+            pano = null;
         });
 
     }
 
     /* ========= Array knockout js =========*/
     self.locations = ko.observableArray([
-          new Marker('Mc donald', 11.004012, -74.812481, 'restaurant', self),
-          new Marker('Hamburguesas El Corral', 11.004836, -74.812189, 'restaurant', self),
-          new Marker('Restaurante El Pulpo Paul', 11.003132, -74.810671, 'restaurant', self),
-          new Marker('Restaurante LUPI', 11.005128, -74.811161, 'restaurant', self),
-          new Marker('farma todo cll 82', 11.0030974, -74.81542189999999, 'store', self),
-          new Marker('farma todo kr 51b', 11.004114,  -74.813444, false, 'store', self)
+        new Marker('Mc donald', 11.004012, -74.812481, 'restaurant', self),
+        new Marker('Hamburguesas El Corral', 11.004836, -74.812189, 'restaurant', self),
+        new Marker('Restaurante El Pulpo Paul', 11.003132, -74.810671, 'restaurant', self),
+        new Marker('Restaurante LUPI', 11.005128, -74.811161, 'restaurant', self),
+        new Marker('farma todo cll 82', 11.0030974, -74.81542189999999, 'store', self),
+        new Marker('farma todo kr 51b', 11.004114, -74.813444, 'store', self)
     ]);
 
     /* ========= View model taht work whit knockout js =========*/
-    var ViewModel = function () {
+    var ViewModel = function() {
         var self = this;
         self.title = ko.observable('Store and Restaurant');
+
     };
 
     /* ========= Computed Observables Search =========*/
     self.query = ko.observable('');
     /* object to hold our map instance  */
-    self.search = ko.computed(function(){
-        return ko.utils.arrayFilter(self.locations(), function(i){
-          return i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;  
+    self.search = ko.computed(function() {
+        return ko.utils.arrayFilter(self.locations(), function(i) {
+            return i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
         });
     });
+
     /* ========= Call the functions ViewModel =========*/
     ko.applyBindings(new ViewModel());
 }

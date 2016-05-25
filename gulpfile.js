@@ -25,7 +25,7 @@ gulp.task('scripts', function(){
 });
 
 gulp.task('styles', function(){
-  return gulp.src('src/styles/*.css')
+  return gulp.src('./src/styles/*.css')
   .pipe(uglify())
   .pipe(gulp.dest('./src/styles/min'))
 });
@@ -45,4 +45,7 @@ gulp.task('serve', function() {
     gulp.watch('./src/index.html', ['content']);
     gulp.watch('./src/scripts/*.js', ['scripts']);
     gulp.watch('./src/styles/*.css', ['styles']);
+});
+// default gulp task
+gulp.task('default', ['modernizr', 'styles', 'scripts', 'serve', 'content'], function() {
 });

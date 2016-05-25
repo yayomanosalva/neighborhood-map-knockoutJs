@@ -1,38 +1,41 @@
-html, body { 
-  height: 100%;
-  margin: 0;
-  padding: 0;
+html,
+body { 
+    height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
-.map { 
-  width: 100%;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
+h1,
+h2,
+h3 {
+    font-weight: normal;
+    line-height: 1.2;
+    display: inline-block;
+    margin: 1rem;
 }
 
 #map {
-  width: 100%;
-  height: 100%;
-  left: 0;
-  position: absolute;
-  top: 0;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
 }
 
 #tool {
-  position: absolute;
-  width: 100%;
-  max-width: 400px;
-  min-width: 300px;
-  margin: 0;
-  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
-  font-family: Roboto,Arial,sans-serif;
-  font-size: 1.1em;
-  background: #2e3d49;
-  border-radius: 4px;
-  padding: 15px;
-  color: #acb1b6;
+    position: absolute;
+    width: 100%;
+    max-width: 400px;
+    min-width: 300px;
+    margin: 0;
+    box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+    font-family: Roboto,Arial,sans-serif;
+    font-size: 1.1em;
+    background: #2e3d49;
+    border-radius: 4px;
+    padding: 15px;
+    color: #acb1b6;
+    top: 6rem;
 }
 
 /*this is the search-filter box */
@@ -63,7 +66,7 @@ html, body {
 }
 
 strong {
-  margin-right: 1rem;
+  margin: 0;
 }
 
 input[type="search"] {
@@ -99,10 +102,38 @@ input[type=checkbox], input[type=radio] {
 }
 
 ul li {
-  list-style-type:none;
-  color: brown;
-  font-size: 1.9rem;
-  font-weight: 300;
-  margin: 0;
-  cursor: pointer;
+    list-style-type:none;
+    color: #2aa4a5;
+    font-size: 1.9rem;
+    font-weight: 300;
+    margin: 0;
+}
+
+ol, ul {
+    margin: 0;
+    padding-left: 15px;
+}
+
+ul li span {
+    color: #fff;
+    font-weight: 400;
+}
+ul li:hover {
+    background: rgba(23,50,78,.7);
+    cursor: pointer;
+}
+
+.input-group-addon {
+    color:#fff;
+    font-size:1.7rem;
+    font-weight: 300;
+}
+/* style header */
+.header {
+    color: #fff;
+    position: relative;
+    top: 0;
+    width: 100%;
+    padding: 0.5em 1em;
+    background: black;
 }
