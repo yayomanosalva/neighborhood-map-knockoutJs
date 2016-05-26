@@ -1,18 +1,24 @@
 // Google Maps JavaScript API
-function Mapa () {
-    var infochevre = false;
+function Mapa() {
     /* ========= class for the Map function =========*/
-    var map = new google.maps.Map(document.getElementById('map'), {
+    var myLatLng = {
+        lat: 11.00414,
+        lng: -74.8132908
+    };
+
+    var myOptions = {
         zoom: 17,
-        center: new google.maps.LatLng(11.00414, -74.8132908),
+        center: myLatLng,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         panControl: false,
         disableDefaultUI: true,
         streetViewControl: false
-    });
+    };
+
+    var map = new google.maps.Map(document.getElementById('map'), myOptions);
 
     /* ========= Marker function, so define the markers =========*/
-    var Marker = function (name, lat, long, category) {
+    this.Marker = function(name, lat, long, category) {
         var self = this;
         self.name = ko.observable(name);
         self.lat = ko.observable(lat);
@@ -51,25 +57,29 @@ function Mapa () {
 
         marker.addListener('click', function() {
             infowindow.open(map, marker, toggleBounce);
+            map.setZoom(18);
+            map.setCenter(marker.getPosition());
         });
 
         function toggleBounce() {
-          if (marker.getAnimation() !== null) {
-            marker.setAnimation(null);
-          } else {
-            marker.setAnimation(google.maps.Animation.BOUNCE);
-          }
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
         }
 
         var pano = null;
-            google.maps.event.addListener(infowindow, 'domready', function() {
+        google.maps.event.addListener(infowindow, 'domready', function() {
             if (pano != null) {
                 pano.unbind("position");
                 pano.setVisible(false);
             }
             pano = new google.maps.StreetViewPanorama(document.getElementById("content"), {
                 navigationControl: true,
-                navigationControlOptions: {style: google.maps.NavigationControlStyle.ANDROID},
+                navigationControlOptions: {
+                    style: google.maps.NavigationControlStyle.ANDROID
+                },
                 enableCloseButton: false,
                 addressControl: false,
                 linksControl: false
@@ -79,37 +89,43 @@ function Mapa () {
         });
 
         google.maps.event.addListener(infowindow, 'closeclick', function() {
-        pano.unbind("position");
-        pano.setVisible(false);
-        pano = null;
+            pano.unbind("position");
+            pano.setVisible(false);
+            pano = null;
         });
-
     }
 
     /* ========= Array knockout js =========*/
-    self.locations = ko.observableArray([
-          new Marker('Mc donald', 11.004012, -74.812481, 'restaurant', self),
-          new Marker('Hamburguesas El Corral', 11.004836, -74.812189, 'restaurant', self),
-          new Marker('Restaurante El Pulpo Paul', 11.003132, -74.810671, 'restaurant', self),
-          new Marker('Restaurante LUPI', 11.005128, -74.811161, 'restaurant', self),
-          new Marker('farma todo cll 82', 11.0030974, -74.81542189999999, 'store', self),
-          new Marker('farma todo kr 51b', 11.004114,  -74.813444, false, 'store', self)
+    this.locations = ko.observableArray([
+        new Marker('Mc donald', 11.004012, -74.812481, 'restaurant', self),
+        new Marker('Hamburguesas El Corral', 11.004836, -74.812189, 'restaurant', self),
+        new Marker('Restaurante El Pulpo Paul', 11.003132, -74.810671, 'restaurant', self),
+        new Marker('Restaurante LUPI', 11.005128, -74.811161, 'restaurant', self),
+        new Marker('farma todo cll 82', 11.0030974, -74.81542189999999, 'store', self),
+        new Marker('farma todo kr 51b', 11.004114, -74.813444, 'store', self)
     ]);
 
-    /* ========= View model taht work whit knockout js =========*/
-    var ViewModel = function () {
-        var self = this;
-        self.title = ko.observable('Store and Restaurant');
-    };
-
     /* ========= Computed Observables Search =========*/
-    self.query = ko.observable('');
+    this.query = ko.observable('');
     /* object to hold our map instance  */
-    self.search = ko.computed(function(){
-        return ko.utils.arrayFilter(self.locations(), function(i){
-          return i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;  
+    this.search = ko.computed(function() {
+        return ko.utils.arrayFilter(this.locations(), function(i) {
+            return i.name().toLowerCase().indexOf(this.query().toLowerCase()) >= 0;
         });
     });
+
+    /* ========= View model taht work whit knockout js =========*/
+    var ViewModel = function() {
+        var self = this;
+        self.title = ko.observable('Store and Restaurant');
+        //Click on item in list view
+        self.listViewClick = function(gym) {
+            map.setZoom(18);
+            map.setCenter(this.Marker.marker.getPosition());
+        };
+
+    };
+
     /* ========= Call the functions ViewModel =========*/
     ko.applyBindings(new ViewModel());
 }
