@@ -56,8 +56,12 @@ function Mapa() {
         });
 
         marker.addListener('click', function() {
+            if (infowindow) {
+                infowindow.close();
+            }
+            infowindow = true;
             infowindow.open(map, marker, toggleBounce);
-            map.setZoom(18);
+            map.setZoom(19);
             map.setCenter(marker.getPosition());
         });
 
