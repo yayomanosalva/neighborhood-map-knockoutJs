@@ -19,8 +19,9 @@
     <script src="https://code.jquery.com/ui/1.12.0-rc.2/jquery-ui.min.js" integrity="sha256-55Jz3pBCF8z9jBO1qQ7cIf0L+neuPTD1u7Ytzrp2dqo=" crossorigin="anonymous"></script>
     <script src="scripts/knockout-3.4.0.js"></script>
     <script src="scripts/modernizr-custom.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAduDRTpulVLoOk794sbmvqFJs_YMKvXQ0&callback=Mapa"></script>
     <script src="scripts/app.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAduDRTpulVLoOk794sbmvqFJs_YMKvXQ0&callback=Mapa"></script>
+
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
@@ -50,9 +51,9 @@
                         </div>
                     </div>
                 </div>
-                <ul data-bind="foreach: search(), click: listViewClick">
+                <ul data-bind="foreach: search() ">
                     <li>
-                        <strong data-bind="text: name"></strong>–
+                        <strong data-bind="text: $data.name,  click: listViewClick"></strong>
                         <span data-bind="text: category"></span>
                     </li>
                 </ul>
@@ -104,4 +105,5 @@
         });
     </script>
 </body>
+
 </html>

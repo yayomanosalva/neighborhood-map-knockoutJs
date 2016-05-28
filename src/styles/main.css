@@ -1,10 +1,9 @@
 html,
-body { 
+body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
-
 h1,
 h2,
 h3 {
@@ -13,7 +12,6 @@ h3 {
     display: inline-block;
     margin: 1rem;
 }
-
 #map {
     width: 100%;
     height: 100%;
@@ -21,24 +19,24 @@ h3 {
     position: absolute;
     top: 0;
 }
-
 #tool {
     position: absolute;
-    width: 100%;
+    width: 90%;
     max-width: 400px;
     min-width: 300px;
     margin: 0;
     box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
-    font-family: Roboto,Arial,sans-serif;
+    font-family: Roboto, Arial, sans-serif;
     font-size: 1.1em;
-    background: #2e3d49;
+    background: rgba(46, 61, 73, 0.81);
     border-radius: 4px;
     padding: 15px;
     color: #acb1b6;
     top: 6rem;
+    left: 0;
 }
-
 /*this is the search-filter box */
+
 #search {
     margin: 0px;
     background-color: #1f747d;
@@ -56,19 +54,19 @@ h3 {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     color: #272727;
 }
-
 /*this is the search-filter box when in focus*/
+
 #search:focus {
     border-color: #4d90fe;
     margin-left: -1px;
-    padding-left: 14px;  /* Regular padding-left + 1. */
+    padding-left: 14px;
+    /* Regular padding-left + 1. */
+    
     width: 401px;
 }
-
 strong {
-  margin: 0;
+    margin: 0;
 }
-
 input[type="search"] {
     padding: 13px 10px;
     line-height: 20px;
@@ -86,9 +84,8 @@ input[type="search"] {
     color: #000;
     border: 1px solid #e6e7e9;
     font-weight: 200;
-    min-height: 50px;
+    min-height: 60px;
 }
-
 label {
     display: inline-block;
     max-width: 100%;
@@ -96,39 +93,37 @@ label {
     font-weight: 700;
     padding: 0 5px;
 }
-
-input[type=checkbox], input[type=radio] {
-  margin: 4px 4px 0 !important;
+input[type=checkbox],
+input[type=radio] {
+    margin: 4px 4px 0 !important;
 }
-
 ul li {
-    list-style-type:none;
+    list-style-type: none;
     color: #2aa4a5;
     font-size: 1.9rem;
     font-weight: 300;
     margin: 0;
 }
-
-ol, ul {
+ol,
+ul {
     margin: 0;
     padding-left: 15px;
 }
-
 ul li span {
     color: #fff;
     font-weight: 400;
 }
 ul li:hover {
-    background: rgba(23,50,78,.7);
+    background: rgba(23, 50, 78, .7);
     cursor: pointer;
 }
-
 .input-group-addon {
-    color:#fff;
-    font-size:1.7rem;
+    color: #fff;
+    font-size: 1.7rem;
     font-weight: 300;
 }
 /* style header */
+
 .header {
     color: #fff;
     position: relative;
