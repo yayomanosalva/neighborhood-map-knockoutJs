@@ -1,5 +1,6 @@
 // Google Maps JavaScript API
 var map;
+
 function Mapa() {
     'use strict'; // turn on Strict Mode
     /* ========= class for the Map function =========*/
@@ -16,12 +17,10 @@ function Mapa() {
         disableDefaultUI: true,
         streetViewControl: false
     };
-    
+
     var map = new google.maps.Map(document.getElementById('map'), myOptions);
 
-    
-
-    var infowindow = new google.maps.InfoWindow({ }); 
+    var infowindow = new google.maps.InfoWindow({});
 
     /* ========= Marker function, so define the markers =========*/
     this.Marker = function(name, lat, long, category) {
@@ -64,7 +63,7 @@ function Mapa() {
                 infowindow.close();
             }
             infowindow.setContent(contentString);
-            infowindow.open(map, this, toggleBounce);
+            infowindow.open(map, this);
             map.setZoom(18);
             map.setCenter(marker.getPosition());
         });
@@ -75,7 +74,7 @@ function Mapa() {
             map.setZoom(18);
             infowindow.setContent(contentString);
             map.setCenter(marker.getPosition());
-            infowindow.open(map, marker, toggleBounce);
+            infowindow.open(map, marker);
         };
 
         //Animation marker
@@ -86,9 +85,6 @@ function Mapa() {
                 marker.setAnimation(google.maps.Animation.BOUNCE);
             }
         };
-
-        //show streetview into infowindow
-        
     }
 
     /* ========= Array knockout js =========*/
@@ -109,37 +105,36 @@ function Mapa() {
             return i.name().toLowerCase().indexOf(query().toLowerCase()) >= 0;
         });
     });
+    //show streetview into infowindow
     var pano = null;
-        google.maps.event.addListener(infowindow, 'domready', function() {
-            if (pano !== null) {
-                pano.unbind("position");
-                pano.setVisible(false);
-            }
-            pano = new google.maps.StreetViewPanorama(document.getElementById("content"), {
-                navigationControl: true,
-                navigationControlOptions: {
-                    style: google.maps.NavigationControlStyle.ANDROID
-                },
-                enableCloseButton: false,
-                addressControl: false,
-                linksControl: false
-            });
-            pano.bindTo("position", this);
-            pano.setVisible(true);
-        });
-
-        google.maps.event.addListener(infowindow, 'closeclick', function() {
+    google.maps.event.addListener(infowindow, 'domready', function() {
+        if (pano !== null) {
             pano.unbind("position");
             pano.setVisible(false);
-            pano = null;
+        }
+        pano = new google.maps.StreetViewPanorama(document.getElementById("content"), {
+            navigationControl: true,
+            navigationControlOptions: {
+                style: google.maps.NavigationControlStyle.ANDROID
+            },
+            enableCloseButton: false,
+            addressControl: false,
+            linksControl: false
         });
+        pano.bindTo("position", this);
+        pano.setVisible(true);
+    });
+
+    google.maps.event.addListener(infowindow, 'closeclick', function() {
+        pano.unbind("position");
+        pano.setVisible(false);
+        pano = null;
+    });
     /* ========= View model taht work whit knockout js =========*/
     var ViewModel = function() {
         var self = this;
         self.title = ko.observable('Store and Restaurant');
     };
-    
-
     /* ========= Call the functions ViewModel =========*/
     ko.applyBindings(new ViewModel());
 }
