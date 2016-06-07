@@ -1,5 +1,6 @@
 // Google Maps JavaScript API
 var map;
+var marker;
 'use strict'; // turn on Strict Mode
 function Mapa() {
     
@@ -18,19 +19,21 @@ function Mapa() {
         streetViewControl: false
     };
 
+    this.infoShow = '';
+
     this.map = new google.maps.Map(document.getElementById('map'), myOptions);
 
-    var contentString = '<div class="nytimes-container">'+'<h3 id="nytimes-header">New York Times Articles</h3>'+'<ul id="nytimes-articles" class="article-list">'+
-        '<li><a href=""></a></li>'+'</div>';
-    
+    var contentString = '<div id="CSSinfowindow">'+
+                            '<div id="title"></div>'+
+                            '<div id="content" style="width:250px;height:280px;margin-top:1rem;">'+
+                            '</div>'+
+                        '</div>';
     var infowindow = new google.maps.InfoWindow({
         content: contentString
-    });
-    
+    });    
     /* ========= View model taht work whit knockout js =========*/
     var ViewModel = function() {
         var self = this;
-        var marker;
         self.title = ko.observable('Store and Restaurant');
         /* ========= Marker function, so define the markers =========*/
         self.Marker = function(name, lat, long, category) {
@@ -38,7 +41,8 @@ function Mapa() {
             this.lat = ko.observable(lat);
             this.long = ko.observable(long);
             this.category = ko.observable(category);
-            var contentString = '<div id="content" style="width:250px;height:280px;"></div>';
+            var marker;
+            
             /* ========= Images Icons  =========*/
             // Setup the different icons
             //images restaurants
@@ -63,49 +67,51 @@ function Mapa() {
                 icon: this.img,
                 draggable: false,
                 animation: google.maps.Animation.DROP
-              };
+            };
 
             //marker
-            this.marker = new google.maps.Marker(markerOptions);
+            marker = new google.maps.Marker(markerOptions);
 
             //click event close and open streetview
-            this.marker.addListener('click',toggleBounce, function() {
+            marker.addListener('click',toggleBounce, function() {
                 if (infowindow) {
                     infowindow.close();
                 }
                 infowindow.setContent(contentString);
                 infowindow.open(map, this);
                 map.setZoom(18);
-                map.setCenter(this.marker.getPosition());
-                marker.setAnimation(google.maps.Animation.BOUNCE)
-                getApi();
-                  if (marker.getAnimation() !== null) {
-                      marker.setAnimation(null);
-                  } else {
-                      marker.setAnimation(google.maps.Animation.BOUNCE);
-                  }
-                  setTimeout(function() {
-                      marker.setAnimation(null);
-                  }, 1400);
             });
 
             //Click on item in list view
             this.listViewClick = function() {
-                this.marker.map.setZoom(18);
+                marker.map.setZoom(18);
                 infowindow.setContent(contentString);
-                this.marker.map.setCenter(this.marker.getPosition());
-                infowindow.open(map, this.marker);                
-            };            
+                marker.map.setCenter(marker.getPosition());
+                infowindow.open(map,marker);
+                self.getinfo(marker.position, name);
+                toggleBounce();             
+            };
+
+            function toggleBounce() {
+              if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+              } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+              }
+            } 
+            this.isVisible = ko.observable(false);
+
+            this.isVisible.subscribe(function(currentState) {
+                if (currentState) {
+                    marker.setMap(map);
+                } else {
+                    marker.setMap(null);
+                }
+            });
+
+            this.isVisible(true);    
         }
 
-        //Animation marker
-        function toggleBounce() {
-            if (marker.getAnimation() !== null) {
-                marker.setAnimation(null);
-            } else {
-                marker.setAnimation(google.maps.Animation.BOUNCE);
-            }
-        };        
 
         /* ========= Array knockout js =========*/
         self.locations = ko.observableArray([
@@ -118,14 +124,89 @@ function Mapa() {
         ]);
 
         /* ========= Computed Observables Search =========*/
-
         self.query  = ko.observable('');
         /* object to hold our map instance  */
         self.search = ko.computed(function() {
             return ko.utils.arrayFilter(self.locations(), function(i) {
-                return i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+                var mostrar = i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+                i.isVisible(mostrar);
+
+                return mostrar;
             });
         });
+
+        //Ajax request 
+        self.getinfo = function(location, name){
+            var point = ''+location+'';
+            point= point.substr(1, point.length-2);
+            var client_id = 'L5X0WMFH5DSAT3IIJZLJPXUBL0ZGROL3SUOFVBNXTLQOOHVU';
+            var client_secret = 'PEULSESS3KAZOGSS2WB5LAJBVRBJ1VER2WCWAYNFNZYFNKZD';
+            var base_url = 'https://api.foursquare.com/v2/';
+            var endpoint = 'venues/search?';
+
+            var params = '&ll=' + point; 
+            var key = '&client_id=' + client_id + '&client_secret=' + client_secret + '&v=' + '20160602';
+            var url = base_url+endpoint+params+key;
+            console.log(url);
+
+            $.getJSON(url)
+                .done(function(response) {
+                    console.log( "second success" );
+                    var venue = response.response.venues[0];
+                    var encabezado='';
+                    var div=$('#title');
+                    var venueName = venue.name;
+                    if (venueName !== null && venueName !== undefined){
+                        encabezado = encabezado + 'name: ' +
+                        venueName + '<br>';
+                    }
+                    /* phone number */
+                    var venuephoneNum = venue.contact.formattedPhone;
+                    if (venuephoneNum !== null && venuephoneNum !== undefined){
+                        encabezado = encabezado + 'phone: ' +
+                            venuephoneNum + '<br>';
+                    }
+                    /* twitter */
+                    var twitterId = venue.contact.twitter;
+                    if (twitterId !== null && twitterId !== undefined){
+                        encabezado = encabezado + 'twitter name: ' +
+                            twitterId + '<br>';
+                    }
+                    /* facebook */
+                    var facebookId = venue.contact.facebookUsername;
+                    if (facebookId !== null && facebookId !== undefined){
+                        encabezado = encabezado + 'facebook name: ' +
+                            facebookId + '<br>';
+                    }
+                    /* address */
+                    var address = venue.location.address;
+                    if (address !== null && address !== undefined){
+                        encabezado = encabezado + 'address: ' +
+                            address + '<br>';
+                    }
+                    /* city */
+                    var city = venue.location.city;
+                    if (city !== null && city !== undefined){
+                        encabezado = encabezado + 'city: ' +
+                            city + '<br>';
+                    }
+                    /* categories */
+                    var categoria = venue.categories.name;
+                    if (categoria !== null && categoria !== undefined){
+                        encabezado = encabezado + 'categories: ' +
+                            categoria + '<br>';
+                    }
+                    console.log(encabezado);
+                    console.log(venueName);
+                    div.append(encabezado);
+                })
+                .fail(function() {
+                    encabezado = encabezado + 'Fouresquare has failed' +
+                    console.log( "error" );
+                });
+        };
+
+        
 
         //show streetview into infowindow
         var pano = null;
@@ -152,8 +233,6 @@ function Mapa() {
             pano.setVisible(false);
             pano = null;
         });
-
-        //api
 
     };
 

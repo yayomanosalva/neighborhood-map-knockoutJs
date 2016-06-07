@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
@@ -21,13 +20,11 @@
     <script src="scripts/modernizr-custom.js"></script>
     <script src="scripts/app.js"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAduDRTpulVLoOk794sbmvqFJs_YMKvXQ0&callback=Mapa"></script>
-
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 
 <body class="menu-hidden">
-
     <div class="content">
         <div id="map"></div>
     </div>
@@ -36,14 +33,13 @@
             <i class="fa fa-bars fa-2x" aria-hidden="true"></i>
         </a>
         <h3 class="header-title" data-bind="text: title"></h3>
-
         <div class="collapse" id="collapseExample">
             <div class="" id="tool">
                 <!--this is the locations list-->
                 <div class="form-group navbar-inverse">
                     <div class="form-group">
                         <div class="input-group">
-                            <input type="search" class="form-control" placeholder="search place…" data-bind="textInput: query, valueUpdate: 'keyup'">
+                            <input type="search" class="form-control" placeholder="search place…" data-bind="value: query, valueUpdate: 'keyup'" autocomplete="off">
                             <div class="input-group-addon btn btn-primary">
                                 <i class="fa fa-filter" aria-hidden="true"></i>
                                 <p>filter</p>
@@ -85,18 +81,15 @@
                             }
                         };
                     }
-
                     // run the effect
                     $("#effect").hide(selectedEffect, options, 1000, callback);
                 };
-
                 // callback function to bring a hidden box back
                 function callback() {
                     setTimeout(function() {
                         $("#effect").removeAttr("style").hide().fadeIn();
                     }, 1000);
                 };
-
                 // set effect from select menu value
                 $("#button").click(function() {
                     runEffect();
@@ -105,5 +98,4 @@
         });
     </script>
 </body>
-
 </html>
