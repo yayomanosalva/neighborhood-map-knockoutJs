@@ -79,7 +79,6 @@ function Mapa() {
                 }
                 infowindow.setContent(contentString);
                 infowindow.open(map, this);
-                //self.getinfo(this);
                 map.setZoom(18);
             });
 
@@ -89,7 +88,8 @@ function Mapa() {
                 infowindow.setContent(contentString);
                 marker.map.setCenter(marker.getPosition());
                 infowindow.open(map,marker);
-                self.getinfo(marker.position, name);                
+                self.getinfo(marker.position, name);
+                toggleBounce();             
             };
 
             function toggleBounce() {
@@ -122,6 +122,18 @@ function Mapa() {
             new self.Marker('farma todo cll 82', 11.0030974, -74.81542189999999, 'store'),
             new self.Marker('farma todo kr 51b', 11.004114, -74.813444, 'store')
         ]);
+
+        /* ========= Computed Observables Search =========*/
+        self.query  = ko.observable('');
+        /* object to hold our map instance  */
+        self.search = ko.computed(function() {
+            return ko.utils.arrayFilter(self.locations(), function(i) {
+                var mostrar = i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+                i.isVisible(mostrar);
+
+                return mostrar;
+            });
+        });
 
         //Ajax request 
         self.getinfo = function(location, name){
@@ -194,17 +206,7 @@ function Mapa() {
                 });
         };
 
-        /* ========= Computed Observables Search =========*/
-        self.query  = ko.observable('');
-        /* object to hold our map instance  */
-        self.search = ko.computed(function() {
-            return ko.utils.arrayFilter(self.locations(), function(i) {
-                return i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
-                i.self.Marker.isVisible(doesMatch);
-
-                return doesMatch;
-            });
-        });
+        
 
         //show streetview into infowindow
         var pano = null;
