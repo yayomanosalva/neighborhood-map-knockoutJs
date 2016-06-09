@@ -13,20 +13,11 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
     <!-- CSS links-->
     <link rel="stylesheet" href="styles/main.css">
-    <!-- JS links -->
-    <script src="scripts/jquery-2.2.2.min.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.0-rc.2/jquery-ui.min.js" integrity="sha256-55Jz3pBCF8z9jBO1qQ7cIf0L+neuPTD1u7Ytzrp2dqo=" crossorigin="anonymous"></script>
-    <script src="scripts/knockout-3.4.0.js"></script>
-    <script src="scripts/modernizr-custom.js"></script>
-    <script src="scripts/app.js"></script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAduDRTpulVLoOk794sbmvqFJs_YMKvXQ0&callback=Mapa"></script>
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 
 <body class="menu-hidden">
     <div class="content">
-        <div id="map"></div>
+        <div id="map" class="mapa"></div>
     </div>
     <header class="header ">
         <a class="" role="button" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
@@ -48,8 +39,8 @@
                     </div>
                 </div>
                 <ul data-bind="foreach: search() ">
-                    <li>
-                        <strong data-bind="text: $data.name,  click: listViewClick"></strong>
+                    <li data-bind="click: listViewClick">
+                        <strong data-bind="text: $data.name"></strong>
                         <span data-bind="text: category"></span>
                     </li>
                 </ul>
@@ -57,45 +48,20 @@
         </div>
     </header>
 
-    <!--this is a knockout template used for point list items-->
+    <!-- JS links -->
+    <script src="scripts/jquery-2.2.2.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0-rc.2/jquery-ui.min.js" integrity="sha256-55Jz3pBCF8z9jBO1qQ7cIf0L+neuPTD1u7Ytzrp2dqo=" crossorigin="anonymous"></script>
+    <script src="scripts/knockout-3.4.0.js"></script>
+    <script src="scripts/modernizr-custom.js"></script>
+    <script src="scripts/app.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAduDRTpulVLoOk794sbmvqFJs_YMKvXQ0&callback=Mapa" onerror="googleError()"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function() {
-            $(function() {
-                // run the currently selected effect
-                function runEffect() {
-                    // get effect type from
-                    var selectedEffect = $("#effectTypes").val();
-
-                    // most effect types need no options passed by default
-                    var options = {};
-                    // some effects have required parameters
-                    if (selectedEffect === "scale") {
-                        options = {
-                            percent: 0
-                        };
-                    } else if (selectedEffect === "size") {
-                        options = {
-                            to: {
-                                width: 200,
-                                height: 60
-                            }
-                        };
-                    }
-                    // run the effect
-                    $("#effect").hide(selectedEffect, options, 1000, callback);
-                };
-                // callback function to bring a hidden box back
-                function callback() {
-                    setTimeout(function() {
-                        $("#effect").removeAttr("style").hide().fadeIn();
-                    }, 1000);
-                };
-                // set effect from select menu value
-                $("#button").click(function() {
-                    runEffect();
-                });
-            });
-        });
+        function googleError() {
+            // error handling here
+            alert('error - reload page.');
+        }
     </script>
 </body>
 </html>

@@ -1,7 +1,7 @@
+'use strict'; // turn on Strict Mode
 // Google Maps JavaScript API
 var map;
 var marker;
-'use strict'; // turn on Strict Mode
 function Mapa() {
     
     /* ========= class for the Map function =========*/
@@ -22,25 +22,17 @@ function Mapa() {
     this.infoShow = '';
 
     this.map = new google.maps.Map(document.getElementById('map'), myOptions);
-
-    var contentString = '<div id="CSSinfowindow">'+
-                            '<div id="title"></div>'+
-                            '<div id="content" style="width:250px;height:280px;margin-top:1rem;">'+
-                            '</div>'+
-                        '</div>';
-    var infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });    
+    var infowindow = new google.maps.InfoWindow({ });    
     /* ========= View model taht work whit knockout js =========*/
     var ViewModel = function() {
         var self = this;
         self.title = ko.observable('Store and Restaurant');
         /* ========= Marker function, so define the markers =========*/
         self.Marker = function(name, lat, long, category) {
-            this.name = ko.observable(name);
-            this.lat = ko.observable(lat);
-            this.long = ko.observable(long);
-            this.category = ko.observable(category);
+            this.name = name;
+            this.lat = lat;
+            this.long = long;
+            this.category = category;
             var marker;
             
             /* ========= Images Icons  =========*/
@@ -71,34 +63,32 @@ function Mapa() {
 
             //marker
             marker = new google.maps.Marker(markerOptions);
-
-            //click event close and open streetview
-            marker.addListener('click',toggleBounce, function() {
-                if (infowindow) {
-                    infowindow.close();
-                }
-                infowindow.setContent(contentString);
-                infowindow.open(map, this);
-                map.setZoom(18);
-            });
-
-            //Click on item in list view
-            this.listViewClick = function() {
+            function repite() {
                 marker.map.setZoom(18);
-                infowindow.setContent(contentString);
                 marker.map.setCenter(marker.getPosition());
                 infowindow.open(map,marker);
                 self.getinfo(marker.position, name);
-                toggleBounce();             
+                toggleBounce();
+            }
+
+            //click event close and open streetview
+            marker.addListener('click', function() {
+                if (infowindow) {
+                    infowindow.close();
+                }
+                 repite()
+            });
+
+            //Click on item in list view
+            
+            this.listViewClick = function() {
+                repite()             
             };
 
             function toggleBounce() {
-              if (marker.getAnimation() !== null) {
-                marker.setAnimation(null);
-              } else {
                 marker.setAnimation(google.maps.Animation.BOUNCE);
-              }
-            } 
+                setTimeout(function(){ marker.setAnimation(null); }, 2000);
+            }
             this.isVisible = ko.observable(false);
 
             this.isVisible.subscribe(function(currentState) {
@@ -108,10 +98,8 @@ function Mapa() {
                     marker.setMap(null);
                 }
             });
-
             this.isVisible(true);    
         }
-
 
         /* ========= Array knockout js =========*/
         self.locations = ko.observableArray([
@@ -128,7 +116,7 @@ function Mapa() {
         /* object to hold our map instance  */
         self.search = ko.computed(function() {
             return ko.utils.arrayFilter(self.locations(), function(i) {
-                var mostrar = i.name().toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+                var mostrar = i.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
                 i.isVisible(mostrar);
 
                 return mostrar;
@@ -152,61 +140,48 @@ function Mapa() {
             $.getJSON(url)
                 .done(function(response) {
                     console.log( "second success" );
+                    
                     var venue = response.response.venues[0];
-                    var encabezado='';
-                    var div=$('#title');
+                    var encabezado = '';
+                    //var div = $('#title');
                     var venueName = venue.name;
-                    if (venueName !== null && venueName !== undefined){
-                        encabezado = encabezado + 'name: ' +
-                        venueName + '<br>';
-                    }
+                    encabezado += venueName ? 'Name: ' + venueName + '<br>' : 'Name not found<br>'
                     /* phone number */
                     var venuephoneNum = venue.contact.formattedPhone;
-                    if (venuephoneNum !== null && venuephoneNum !== undefined){
-                        encabezado = encabezado + 'phone: ' +
-                            venuephoneNum + '<br>';
-                    }
+                    encabezado += venuephoneNum ? 'Phone number: ' + venuephoneNum + '<br>' : 'Phone number not found<br>'
                     /* twitter */
                     var twitterId = venue.contact.twitter;
-                    if (twitterId !== null && twitterId !== undefined){
-                        encabezado = encabezado + 'twitter name: ' +
-                            twitterId + '<br>';
-                    }
+                    encabezado += twitterId ? 'Twitter: ' + twitterId + '<br>' : 'Twitter not found<br>'
                     /* facebook */
                     var facebookId = venue.contact.facebookUsername;
-                    if (facebookId !== null && facebookId !== undefined){
-                        encabezado = encabezado + 'facebook name: ' +
-                            facebookId + '<br>';
-                    }
+                    encabezado += facebookId ? 'Facebook: ' + facebookId + '<br>' : 'Facebook not found<br>'
                     /* address */
                     var address = venue.location.address;
-                    if (address !== null && address !== undefined){
-                        encabezado = encabezado + 'address: ' +
-                            address + '<br>';
-                    }
+                    encabezado += address ? 'Address: ' + address + '<br>' : 'address not found<br>'
                     /* city */
                     var city = venue.location.city;
-                    if (city !== null && city !== undefined){
-                        encabezado = encabezado + 'city: ' +
-                            city + '<br>';
-                    }
+                    encabezado += city ? 'City: ' + city + '<br>' : 'city not found<br>'
                     /* categories */
                     var categoria = venue.categories.name;
-                    if (categoria !== null && categoria !== undefined){
-                        encabezado = encabezado + 'categories: ' +
-                            categoria + '<br>';
-                    }
+                    encabezado += categoria ? 'Category: ' + categoria + '<br>' : 'Category not found<br>'
+
                     console.log(encabezado);
                     console.log(venueName);
-                    div.append(encabezado);
+                    //setContent method
+                    //div.append(encabezado);
+                    //infowindow.setContent(encabezado);
+                    var contentApi = '<div id="CSSinfowindow">'+
+                                                '<div id="title">'+encabezado+'</div>'+
+                                            '<div id="content" style="width:250px;height:280px;margin-top:1rem;">'+
+                                            '</div>'+
+                                        '</div>';
+                    infowindow.setContent(contentApi);
                 })
                 .fail(function() {
-                    encabezado = encabezado + 'Fouresquare has failed' +
+                    var encabezado = 'Fouresquare has failed';
                     console.log( "error" );
-                });
+                });                
         };
-
-        
 
         //show streetview into infowindow
         var pano = null;
@@ -233,7 +208,6 @@ function Mapa() {
             pano.setVisible(false);
             pano = null;
         });
-
     };
 
     /* ========= Call the functions ViewModel =========*/
