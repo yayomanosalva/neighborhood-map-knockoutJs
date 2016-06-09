@@ -32,7 +32,7 @@ List view item selected and highlighted. Associated map marker bounced and info 
 1. 
 
   ```bash
-    ![alt text](https://github.com/yayomanosalva/neighborhood-map-knockoutJs/blob/master/src/images/screen.png "app")
+    https://github.com/yayomanosalva/neighborhood-map-knockoutJs/blob/api/src/images/screen.png
   ```
 
 1. author
